@@ -9,7 +9,7 @@ Created on Fri Oct 30 18:33:37 2020
 import numpy as np
 import panda as pd
 
-#Variables
+# Initialisation des variables
 
 r=0.05 # Taux d'interet
 T=50 #  Temps
@@ -17,4 +17,5 @@ T=50 #  Temps
 X = [] # le capital investit
 W = [] # l'optimal cumulative reward
 A = [] # l'action au temps t
-Ro = [] # 
+Ro = [] # Cumulative reward
+

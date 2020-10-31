@@ -11,14 +11,15 @@ import pandas as pd
 
 " Variable declaration " 
 
-r=0.05 # Interest rate
-T=50 #Maturity
+r = 0.05 # Interest rate
+T = 50 # Maturity
+X_0 = 1000000 # fund at t=0
 X = [] # le capital investit
 W = [] # l'optimal cumulative reward
 A = [] # l'action au temps t
 Ro = [] # Cumulative reward
 
-" Bang Bang Controller " 
+""" QUESTION 1 : Bang Bang Controller """
 
 def BangBang_Controller():
     Bang=1
@@ -31,3 +32,11 @@ def BangBang_Controller():
 
 #x = BangBang_Controller()
 #print(x)
+    
+""" QUESTION 2 : Compute the corresponding total consumption and 
+find the sequence of optimal actions.
+"""
+
+def total_consuption():
+    for i in range (1,T):
+        

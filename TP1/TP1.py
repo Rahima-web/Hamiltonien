@@ -63,7 +63,7 @@ def plant_equation():
     
 def optimize1(A):
     S=0
-    X=plant_equation(A)
+    X=plant_equation()
     for i in range(0,T):
         S+= r* X[i]* A[i]
     return -S

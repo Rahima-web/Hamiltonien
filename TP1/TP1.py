@@ -53,7 +53,7 @@ Ro = [] # Cumulative reward
 
 ### First, we implement the plant equation
 
-def plant_equation(A):
+def plant_equation():
     X_invest= [X_0]
     for i in range (1,T):
         X_invest.append( X_invest[i-1] + r*X_invest[i-1]*(1-A[i-1]))
@@ -75,7 +75,7 @@ res= minimize(optimize1,A,method='SLSQP',bounds=bnds)
 A1=res.x
 A1[-1]=1
 #print(A1)
-X=plant_equation(A1)
+X=plant_equation()
 #print(X)
 
 ### Finaly, we implement the Bang Bang controller

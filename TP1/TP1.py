@@ -74,9 +74,9 @@ res= minimize(optimize1,A,method='SLSQP',bounds=bnds)
 
 A1=res.x
 A1[-1]=1
-#print(A1)
+print(A1)
 X=plant_equation()
-#print(X)
+print(X)
 
 ### Finaly, we implement the Bang Bang controller
 

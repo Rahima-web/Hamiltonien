@@ -120,8 +120,7 @@ def optimize2(A):
     S=consumption(A)[1]
     return -S
 
-bnds=((0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),(0,1),)
-
+bnds=[(0,1) for i in range (0,T)]
 res2= minimize(optimize2,A,method='SLSQP',bounds=bnds)
 
 A2=res2.x
@@ -157,17 +156,21 @@ def gamma():
         gama[i-1] =  (1+r) * rho[i] + (1+r*rho[i])*A1[i-1]
     
     return gama
-Y1 = (1+rho)
-Y2 = (1 + r)*rho
+
+Y1 = []
+Y2 = []
+for i in range (0,T):
+    Y1.append (1+rho[i])
+ 
+for i in range (0,T):
+    Y2.append ((1 + r)*rho[i])
+    
 G = gamma()
 plt.plot(rho,Y1)
 plt.plot(rho,Y2)
 plt.plot(rho,G)
 plt.legend()
 plt.show()
-
-
-
 
 
 

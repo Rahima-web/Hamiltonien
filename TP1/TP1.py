@@ -148,6 +148,29 @@ plt.plot(time,A2)
 plt.show()
 
 
+gama = []
+rho,W= BangBang_Controller()
+
+def gamma():
+    
+    for i in range(1,T):
+        gama[i-1] =  (1+r) * rho[i] + (1+r*rho[i])*A1[i-1]
+    
+    return gama
+Y1 = (1+rho)
+Y2 = (1 + r)*rho
+G = gamma()
+plt.plot(rho,Y1)
+plt.plot(rho,Y2)
+plt.plot(rho,G)
+plt.legend()
+plt.show()
+
+
+
+
+
+
 """ QUESTION 5 : Choose a couple of other strategies (controllers) to compare their respective total consumption to that obtained using the bang-bang approach.
 """
 

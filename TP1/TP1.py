@@ -57,7 +57,7 @@ A=np.zeros((T,1))
 def BangBang_Controller():
     rho=1 # value of rho at (T-1)=1
     RHO=[rho]
-    A[0]=1 # Valut of a at (T-1) =1
+    A[0]=1 # Value of a at (T-1) =1
     for i in range (1,T):
         if r>= 1/rho:
             rho=(1+r) * rho

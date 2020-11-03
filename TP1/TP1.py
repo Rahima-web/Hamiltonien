@@ -8,6 +8,8 @@ Created on Fri Oct 30 18:33:37 2020
 """
 
 """
+GROUPE : Rahima Mohamed
+
 PROBLEM :
     
 An investor has a fund. It has 1 million euros at time zero. 
@@ -23,6 +25,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
+import random
 
 " VARIABLE DECLARATION " 
 
@@ -41,23 +44,22 @@ X_invest = []
 # Consumed Capital
 X_consum = [] 
 
-# Cumulative Reward
-W = [] 
+# Cumulative Reward/Total consumption
+
+W=0
 
 # Sequence of actions 
 A=np.zeros((T,1))
-#print(A)
-#print(A.shape)
 
 
 """ QUESTION 1 : Implement the Bang Bang Controller """
 
-## Bang Bang Controller
+##----------------Bang Bang Controller--------------##
 
 def BangBang_Controller():
-    rho=1 # ro T-1
+    rho=1 # value of rho at (T-1)=1
     RHO=[rho]
-    A[0]=1 #a (T-1) =1
+    A[0]=1 # Valut of a at (T-1) =1
     for i in range (1,T):
         if r>= 1/rho:
             rho=(1+r) * rho
@@ -67,18 +69,19 @@ def BangBang_Controller():
             rho = 1 + rho
             RHO.append(rho)
             A[i]=1
-    RHO.reverse() # la dernière valeur de RO doit être 1, on reorganise donc la liste
+    RHO.reverse() # on reorganise donc la liste des rho
     A[:] = A[::-1] # on reorganise aussi A 
     return RHO,A
 
 print("\n")
 print ("--------------- THE SEQUENCE OF ACTIONS a --------------------")
+
 B=BangBang_Controller()
-#print(b[0])
 print(B[1])
+
 print("\n")
 
-## The cumulative reward 
+##----------------The invested capital--------------##
 
 def plant_equation(A):
     X_invest= [X_0]
@@ -87,12 +90,15 @@ def plant_equation(A):
     return X_invest
 
 
-X = plant_equation(B[1])
+
+X = plant_equation(B[1]) #B[1] : The sequence of action a
 
 print ("--------------- EVOLUTION OF THE INVESTED CAPITAL--------------------")
 print("\n")
+
 print(X)
-    
+print("\n")  
+
 time=[i for i in range(0,T)]
 
 plt.plot(time,X,color = 'red')
@@ -108,46 +114,28 @@ find the sequence of optimal actions.
 """
 
 def consumption(A):
-    X_consum=[0]
+    X_consum=[]
     S=0
-    for i in range (1,T):
+    for i in range (1,T+1):
         X_consum.append(r*X[i-1]*A[i-1])
         S+=X_consum[i-1]
     return X_consum,S
 
 print ("--------------- CONSUMPTION ARRAY--------------------")
 print("\n")
-C=consumption(B[1])
+
+C=consumption(B[1]) #B[1] : The sequence of action a
 print(C[0])
 print("\n")
 
-# The total consumption
+
 print ("--------------- TOTAL CONSUMPTION --------------------")
 print("\n")
+
 print(C[1])
 print("\n")
 
-#
-#plt.plot(time,B[1])
-#plt.show()
-#plt.plot(time,C[0])
-#plt.show()
 
-##
-#def optimize2(A):
-#    S=consumption(A)[1]
-#    return -S
-#
-#bnds=[(0,1) for i in range (0,T)]
-#res2= minimize(optimize2,A,method='SLSQP',bounds=bnds)
-#
-#A2=res2.x
-#A2[-1]=1
-##print(A)
-#X2=consumption(A2)[0]
-#print(X2)
-#plt.plot(time,X2)
-#plt.show()
     
 """ QUESTION 3 : Plot the consumption as a function of time
 """
@@ -161,17 +149,14 @@ plt.ylabel('consumption')
 plt.xlabel('Time')
 plt.show()
 
-#
-#time=[i for i in range(0,T)]
-#
-#plt.plot(time,X2)
-#plt.show()
 
 """ QUESTION 4 : Plot the action sequence as a function of time.
 """
 
+print("\n")
 print ("--------------- EVOLUTION OF ACTIONS --------------------")
 print("\n")
+
 plt.plot(time,B[1],color = 'purple')
 plt.title('PROPORTION (a) EVOLUTION')
 plt.ylabel('proportion a')
@@ -195,52 +180,179 @@ for i in range (0,T):
  
 for i in range (0,T):
     Y2.append ((1 + r)*rho[i]) #a=0
-   
+
+print("\n")   
 print ("--------------- CONSUME AND SAVE --------------------")
 print("\n")
+
 G = gamma()
 plt.plot(rho,Y1,label = 'Y1',color = 'blue')
 plt.plot(rho,Y2, label = 'Y2', color ='magenta')
-#plt.plot(rho,G)
+plt.plot(rho,G, label = 'Gamma', color= 'orange')
 plt.legend()
 plt.show()
 
 
-#time=[i for i in range(0,T)]
-#
-#plt.plot(time,A2)
-#plt.show()
-#
-#
-#gama = np.zeros((T,1))
-#rho,W= BangBang_Controller()
-#
-#def gamma():
-#    
-#    for i in range(1,T):
-#        gama[i-1] =  (1+r) * rho[i] + (1+r*rho[i])*A1[i-1]
-#    
-#    return gama
-#
-#Y1 = []
-#Y2 = []
-#for i in range (0,T):
-#    Y1.append (1+rho[i])
-# 
-#for i in range (0,T):
-#    Y2.append ((1 + r)*rho[i])
-#    
-#G = gamma()
-#plt.plot(rho,Y1)
-#plt.plot(rho,Y2)
-#plt.plot(rho,G)
-#plt.legend()
-#plt.show()
-#
 
-
-""" QUESTION 5 : Choose a couple of other strategies (controllers) to compare their respective total consumption to that obtained using the bang-bang approach.
+""" QUESTION 5 : Choose a couple of other strategies (controllers) 
+to compare their respective total consumption to that obtained using 
+the bang-bang approach.
 """
+
+print("\n")
+print ("--------------- OTHER STRATEGIES --------------------")
+print("\n")
+
+##----------First stratégie: if A is always eaqual to 1----------##
+
+print ("             IF A IS ALWAYS EQUAL TO 1 :             ")
+print("\n")
+
+
+A1=np.ones((T,1))
+
+print ("The total consumption is:")
+C1=consumption(A1)
+print(C1[1])
+
+print("\n")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1])
+
+print(C[1])
+
+plt.plot(time,A1,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
+
+
+##----------Seconde Stratégie: if A is increasing through the time----------##
+
+print("\n")
+print ("             IF A IS INCREASING :             ")
+print("\n")
+
+A2= np.arange(0,1,1/49)
+
+print ("The total consumption is:")
+C2=consumption(A2)
+
+print(C2[1])
+
+print("\n")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1])
+
+print(C[1])
+
+plt.plot(time,A2,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
+
+##----------3rd Stratégie: if A is decreasing through the time----------##
+
+print("\n")
+print ("             IF A IS DECREASING :             ")
+print("\n")
+
+A3= np.zeros((T,1))
+A3[0]=1
+A3[49]=0
+for i in range (1,T-1):
+    A3[i]=A3[i-1]-1/(T-1)
+
+
+print ("The total consumption is:")
+C3=consumption(A3)
+
+print(C3[1])
+
+print("\n")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1])
+
+print(C[1])
+
+plt.plot(time,A3,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
+
+##----------4th Stratégie: if A is random----------##
+
+print("\n")
+print ("             IF A IS RANDOM :             ")
+print("\n")
+
+A4=np.zeros((T,1))
+for i in range (0,T):
+    A4[i]=random.uniform(0,1)
+    
+print ("The total consumption is:")
+C4=consumption(A4)
+
+print(C4[1])
+
+print("\n") 
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1])
+
+print(C[1])
+
+plt.plot(time,A4,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
+
+##----------5th Stratégie: if A is increasing then deacreasing----------##
+
+print("\n")
+print ("             IF A IS INCREASING THEN DECREASING :             ")
+print("\n")
+A5= np.arange(0,1,1/49)
+A5[0]=0
+
+for i in range (25,T):
+    A5[i]=abs(A5[i-1]-1/(T-1))
+    
+A5[49]=0
+
+print ("The total consumption is:")
+C5=consumption(A4)
+
+print(C5[1])
+
+print("\n")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1])
+
+print(C[1])
+
+plt.plot(time,A5,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
+
+
+
+
+
+
+
+
+
 
 
 

@@ -8,7 +8,7 @@ Created on Fri Oct 30 18:33:37 2020
 """
 
 """
-GROUPE : Rahima Mohamed
+GROUPE : Rahima Mohamed, Mahisha Uruthirasigamani, Danush Chandrarajah  
 
 PROBLEM :
     
@@ -22,8 +22,6 @@ What should the investor do to maximize the consumption before T?
 """
 
 import numpy as np
-import pandas as pd
-from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import random
 

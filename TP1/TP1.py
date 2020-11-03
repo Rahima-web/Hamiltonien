@@ -203,9 +203,14 @@ print("\n")
 
 ##----------First stratégie: if A is always eaqual to 1----------##
 
-print ("             IF A IS ALWAYS EQUAL TO 1 :             ")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1],X)
+print(C[1])
 print("\n")
 
+
+print ("             IF A IS ALWAYS EQUAL TO 1 :             ")
 
 A1=np.ones((T,1))
 X1 = plant_equation(A1)
@@ -216,23 +221,10 @@ print(C1[1])
 
 print("\n")
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
-
-print(C[1])
-
-plt.plot(time,A1,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
-plt.show()
-
 
 ##----------Seconde Stratégie: if A is increasing through the time----------##
 
-print("\n")
 print ("             IF A IS INCREASING :             ")
-print("\n")
 
 A2= np.arange(0,1,1/(T-1))
 X2 = plant_equation(A2)
@@ -244,22 +236,10 @@ print(C2[1])
 
 print("\n")
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
-
-print(C[1])
-
-plt.plot(time,A2,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
-plt.show()
 
 ##----------3rd Stratégie: if A is decreasing through the time----------##
 
-print("\n")
 print ("             IF A IS DECREASING :             ")
-print("\n")
 
 A3= np.zeros((T,1))
 A3[0]=1
@@ -276,22 +256,11 @@ print(C3[1])
 
 print("\n")
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
 
-print(C[1])
-
-plt.plot(time,A3,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
-plt.show()
 
 ##----------4th Stratégie: if A is random----------##
 
-print("\n")
 print ("             IF A IS RANDOM :             ")
-print("\n")
 
 A4=np.zeros((T,1))
 for i in range (0,T):
@@ -306,22 +275,11 @@ print(C4[1])
 
 print("\n") 
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
-
-print(C[1])
-
-plt.plot(time,A4,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
-plt.show()
 
 ##----------5th Stratégie: if A is increasing then deacreasing----------##
 
-print("\n")
 print ("             IF A IS INCREASING THEN DECREASING :             ")
-print("\n")
+
 A5= np.arange(0,1,1/49)
 A5[0]=0
 
@@ -336,25 +294,13 @@ print ("The total consumption is:")
 C5=consumption(A5,X5)
 
 print(C5[1])
+print("\n") 
 
-print("\n")
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
-
-print(C[1])
-
-plt.plot(time,A5,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
-plt.show()
 
 ##----------6th Stratégie: if A is equal to 0 and 1 at t=T-1----------##
 
-print("\n")
 print ("             IF A IS EQUAL TO 0 AND 1 AT t=T-1:             ")
-print("\n")
 
 A6=np.zeros((T,1))
 A6[T-1]=1
@@ -365,24 +311,25 @@ print ("The total consumption is:")
 C6=consumption(A6,X6)
 
 print(C6[1])
+print("\n") 
 
-print("\n")
+print ("             GRAPH OF A EVOLUTION:             ")
 
-print ("The total consumption with bang bang controller is:")
-C=consumption(B[1],X)
+plt.figure(figsize=(7,7))
 
-print(C[1])
 
-plt.plot(time,A6,color = 'purple')
-plt.title('PROPORTION (a) EVOLUTION')
-plt.ylabel('proportion a')
-plt.xlabel('Time')
+plt.plot(time,A2, label = 'A increasing', color ='magenta')
+plt.plot(time,A3, label = 'A decreasing', color= 'orange')
+plt.plot(time,A6, label = 'A=0 and 1 at t=T-1', color= 'purple')
+plt.legend()
 plt.show()
+plt.figure(figsize=(7,7))
+plt.plot(time,A1,label = 'A=1',color = 'blue')
+plt.plot(time,A4,label = 'A random',color = 'red')
+plt.plot(time,A5, label = 'A increase and decrease', color ='green')
 
-
-
-
-
+plt.legend()
+plt.show()
 
 
 

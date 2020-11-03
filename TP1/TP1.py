@@ -111,7 +111,7 @@ plt.show()
 find the sequence of optimal actions.
 """
 
-def consumption(A):
+def consumption(A,X):
     X_consum=[]
     S=0
     for i in range (1,T+1):
@@ -122,7 +122,7 @@ def consumption(A):
 print ("--------------- CONSUMPTION ARRAY--------------------")
 print("\n")
 
-C=consumption(B[1]) #B[1] : The sequence of action a
+C=consumption(B[1],X) #B[1] : The sequence of action a
 print(C[0])
 print("\n")
 
@@ -208,15 +208,16 @@ print("\n")
 
 
 A1=np.ones((T,1))
+X1 = plant_equation(A1)
 
 print ("The total consumption is:")
-C1=consumption(A1)
+C1=consumption(A1,X1)
 print(C1[1])
 
 print("\n")
 
 print ("The total consumption with bang bang controller is:")
-C=consumption(B[1])
+C=consumption(B[1],X)
 
 print(C[1])
 
@@ -233,17 +234,18 @@ print("\n")
 print ("             IF A IS INCREASING :             ")
 print("\n")
 
-A2= np.arange(0,1,1/49)
+A2= np.arange(0,1,1/(T-1))
+X2 = plant_equation(A2)
 
 print ("The total consumption is:")
-C2=consumption(A2)
+C2=consumption(A2,X2)
 
 print(C2[1])
 
 print("\n")
 
 print ("The total consumption with bang bang controller is:")
-C=consumption(B[1])
+C=consumption(B[1],X)
 
 print(C[1])
 
@@ -261,20 +263,21 @@ print("\n")
 
 A3= np.zeros((T,1))
 A3[0]=1
-A3[49]=0
+A3[T-1]=0
 for i in range (1,T-1):
     A3[i]=A3[i-1]-1/(T-1)
 
+X3 = plant_equation(A3)
 
 print ("The total consumption is:")
-C3=consumption(A3)
+C3=consumption(A3,X3)
 
 print(C3[1])
 
 print("\n")
 
 print ("The total consumption with bang bang controller is:")
-C=consumption(B[1])
+C=consumption(B[1],X)
 
 print(C[1])
 
@@ -293,16 +296,18 @@ print("\n")
 A4=np.zeros((T,1))
 for i in range (0,T):
     A4[i]=random.uniform(0,1)
-    
+ 
+X4 = plant_equation(A4)
+
 print ("The total consumption is:")
-C4=consumption(A4)
+C4=consumption(A4,X4)
 
 print(C4[1])
 
 print("\n") 
 
 print ("The total consumption with bang bang controller is:")
-C=consumption(B[1])
+C=consumption(B[1],X)
 
 print(C[1])
 
@@ -323,17 +328,19 @@ A5[0]=0
 for i in range (25,T):
     A5[i]=abs(A5[i-1]-1/(T-1))
     
-A5[49]=0
+A5[T-1]=0
+
+X5 = plant_equation(A5)
 
 print ("The total consumption is:")
-C5=consumption(A4)
+C5=consumption(A5,X5)
 
 print(C5[1])
 
 print("\n")
 
 print ("The total consumption with bang bang controller is:")
-C=consumption(B[1])
+C=consumption(B[1],X)
 
 print(C[1])
 
@@ -343,9 +350,34 @@ plt.ylabel('proportion a')
 plt.xlabel('Time')
 plt.show()
 
+##----------6th Stratégie: if A is equal to 0 and 1 at t=T-1----------##
 
+print("\n")
+print ("             IF A IS EQUAL TO 0 AND 1 AT t=T-1:             ")
+print("\n")
 
+A6=np.zeros((T,1))
+A6[T-1]=1
 
+X6 = plant_equation(A6)
+
+print ("The total consumption is:")
+C6=consumption(A6,X6)
+
+print(C6[1])
+
+print("\n")
+
+print ("The total consumption with bang bang controller is:")
+C=consumption(B[1],X)
+
+print(C[1])
+
+plt.plot(time,A6,color = 'purple')
+plt.title('PROPORTION (a) EVOLUTION')
+plt.ylabel('proportion a')
+plt.xlabel('Time')
+plt.show()
 
 
 

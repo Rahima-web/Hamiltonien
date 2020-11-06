@@ -39,11 +39,14 @@ W_T = 0.998
 W=np.zeros((T,1))
 
 # Sequence of actions 
-A=np.zeros((T,1))
+#A=np.zeros((T,1))
 
 #Price matrix
 P = np.zeros((T,1))
 
+#The real price
+
+P_R = 30000
 time=[i for i in range(0,T)]
 """ QUESTION 1 : Find the optimal strategy and the wealth 
 i.e., the optimal expected cumulative reward) over time using 

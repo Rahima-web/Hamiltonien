@@ -99,5 +99,9 @@ plt.ylabel('W')
 plt.xlabel('Time')
 plt.show()
 
-
+plt.plot(time,P1)
+plt.title('EVOLUTION OF PRICE')
+plt.ylabel('P')
+plt.xlabel('Time')
+plt.show()
     

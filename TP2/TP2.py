@@ -21,6 +21,7 @@ reward, when D(p) = (1 − p)+.
 
 import numpy as np
 import matplotlib.pyplot as plt
+import random
 
 " VARIABLE DECLARATION " 
 
@@ -108,3 +109,64 @@ plt.ylabel('P')
 plt.xlabel('Time')
 plt.show()
     
+# 2nd Strategy: P is inscreasing
+
+P2=np.linspace(0,1,T)
+W2=Wealth1(P2)
+
+plt.plot(time,W2)
+plt.title('EVOLUTION OF WEALTH')
+plt.ylabel('W')
+plt.xlabel('Time')
+plt.show()
+
+plt.plot(time,P2)
+plt.title('EVOLUTION OF PRICE')
+plt.ylabel('P')
+plt.xlabel('Time')
+plt.show()
+
+
+# 3rd Strategy: P is decreasing
+
+P3=np.ones((T,1))
+
+for i in range (0,T):
+    P3[i]=P3[i-1]-1/(T-1)
+
+W3=Wealth1(P3)
+
+plt.plot(time,W3)
+plt.title('EVOLUTION OF WEALTH')
+plt.ylabel('W')
+plt.xlabel('Time')
+plt.show()
+
+plt.plot(time,P3)
+plt.title('EVOLUTION OF PRICE')
+plt.ylabel('P')
+plt.xlabel('Time')
+plt.show()
+
+# Random
+P4=np.zeros((T,1))
+for i in range (0,T):
+    P4[i]=random.uniform(0,1)
+ 
+W4=Wealth1(P4)
+
+plt.figure(figsize=(14,7))
+
+plt.plot(time,W4)
+plt.title('EVOLUTION OF WEALTH')
+plt.ylabel('W')
+plt.xlabel('Time')
+plt.show()
+
+plt.figure(figsize=(14,7))
+plt.plot(time,P4)
+plt.title('EVOLUTION OF PRICE')
+plt.ylabel('P')
+plt.xlabel('Time')
+plt.show()
+

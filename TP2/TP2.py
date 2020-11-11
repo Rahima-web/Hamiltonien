@@ -26,28 +26,20 @@ import random
 " VARIABLE DECLARATION " 
 
 # Maturity
-T = 300 
-
-# State
-#X = [] 
+T = 500 
 
 # if the car is not sell until T
 
-W_T = 0.998
+W_T = 0.3
 
 # Cumulative Reward
 
 W=np.zeros((T,1))
 
-# Sequence of actions 
-#A=np.zeros((T,1))
 
 #Price matrix
 P = np.zeros((T,1))
 
-#The real price
-
-#P_R = 30000
 
 time=[i for i in range(0,T)]
 
@@ -61,13 +53,19 @@ the Bellman equation.
 def Wealth():
     #W_T is fixed and W_0 is equal to zeros
     W[T-1]=W_T
+    W[0]=0
     for i in range (T-1,0,-1):
         W[i-1]= ((1+W[i])/2.0)**2
+    W[0]=0
     return W
+
+
 W=Wealth()
+
 
 print( "\n------Question 1 : the optimal expected cumulative reward------\n")
 print (W)
+
 def Price(W):
     P[T-1]=W_T
     for i in range (T-1,0,-1):
@@ -106,7 +104,6 @@ print( "\n 1ST STRATEGY : P=0.5 \n")
 P1 = np.array([0.5 for i in range(0,T)])
 W1=Wealth1(P1)
 
-
 plt.plot(time,W1)
 plt.title('EVOLUTION OF WEALTH')
 plt.ylabel('W')
@@ -125,6 +122,7 @@ print( "\n 2ND STRATEGY : P IS INCREASING \n")
 P2=np.linspace(0,1,T)
 
 W2=Wealth1(P2)
+print (np.where(W2==max(W2)))
 
 plt.plot(time,W2)
 plt.title('EVOLUTION OF WEALTH')
@@ -170,7 +168,6 @@ for i in range (0,T):
     P4[i]=random.uniform(0,1)
 
 W4=Wealth1(P4)
-
 plt.figure(figsize=(14,7))
 
 plt.plot(time,W4)
@@ -185,4 +182,47 @@ plt.title('EVOLUTION OF PRICE')
 plt.ylabel('P')
 plt.xlabel('Time')
 plt.show()
+
+
+print("\n")
+print ("-------------------COMPARISON--------------------")
+print("\n")
+
+print ("      WITH BELLMAN       ")
+print("\nThe max of optimal cumulative reward is:" , max(W))
+print("The max is reached at this index:",np.where(W==max(W)))
+
+print("\n")
+
+print ("      WITH P=0.25       ")
+print("\nThe max of optimal cumulative reward is:",max(W1))
+print("The max is reached at this index:",0)
+
+print("\n")
+
+print ("      WITH P INCREASING      ")
+print("\nThe max of optimal cumulative reward is:", max(W2))
+print("The max is reached at this index:",np.where(W2==max(W2)))
+
+print("\n")
+
+print ("      WITH P DECREASING      ")
+print("\nThe max of optimal cumulative reward is:",max(W3))
+print("The max is reached at this index:",np.where(W3==max(W3)))
+
+print("\n")
+
+print ("      WITH P RANDOM      ")
+print("\nThe max of optimal cumulative reward is:",max(W4))
+print("The max is reached at this index:",np.where(W4==max(W4)))
+
+
+
+
+
+
+
+
+
+
 

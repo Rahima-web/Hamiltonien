@@ -104,8 +104,8 @@ print( "\n----------------Question 3: other strategies---------------\n")
     
 print( "\n 1ST STRATEGY : P=0.5 \n")
 P1 = np.array([0.5 for i in range(0,T)])
-
 W1=Wealth1(P1)
+
 
 plt.plot(time,W1)
 plt.title('EVOLUTION OF WEALTH')
@@ -123,6 +123,7 @@ plt.show()
 
 print( "\n 2ND STRATEGY : P IS INCREASING \n")
 P2=np.linspace(0,1,T)
+
 W2=Wealth1(P2)
 
 plt.plot(time,W2)
@@ -167,7 +168,7 @@ print( "\n 4TH STRATEGY : P IS RANDOM\n")
 P4=np.zeros((T,1))
 for i in range (0,T):
     P4[i]=random.uniform(0,1)
- 
+
 W4=Wealth1(P4)
 
 plt.figure(figsize=(14,7))

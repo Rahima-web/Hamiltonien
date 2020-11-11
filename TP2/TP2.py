@@ -26,7 +26,7 @@ import random
 " VARIABLE DECLARATION " 
 
 # Maturity
-T = 500 
+T = 300 
 
 # State
 #X = [] 
@@ -35,7 +35,7 @@ T = 500
 
 W_T = 0.998
 
-# Cumulative Reward/Total consumption
+# Cumulative Reward
 
 W=np.zeros((T,1))
 
@@ -47,8 +47,11 @@ P = np.zeros((T,1))
 
 #The real price
 
-P_R = 30000
+#P_R = 30000
+
 time=[i for i in range(0,T)]
+
+
 """ QUESTION 1 : Find the optimal strategy and the wealth 
 i.e., the optimal expected cumulative reward) over time using 
 the Bellman equation. 
@@ -61,8 +64,10 @@ def Wealth():
     for i in range (T-1,0,-1):
         W[i-1]= ((1+W[i])/2.0)**2
     return W
-
 W=Wealth()
+
+print( "\n------Question 1 : the optimal expected cumulative reward------\n")
+print (W)
 def Price(W):
     P[T-1]=W_T
     for i in range (T-1,0,-1):
@@ -73,6 +78,7 @@ P=Price(W)
 
 """ QUESTION 2 : Plot the resulting optimal strategy and the wealth over time. """
 
+print( "\n----------------Question 2---------------\n")
 plt.plot(time,W)
 plt.title('EVOLUTION OF WEALTH')
 plt.ylabel('W')
@@ -87,12 +93,16 @@ plt.show()
 
 """ QUESTION 3 : Choose a couple of other strategies and see the corresponding revenues. """
 
+
 def Wealth1(P):
     W=P**2
     return W
 
+print( "\n----------------Question 3: other strategies---------------\n")
+
 # 1st Strategy: P is constant
     
+print( "\n 1ST STRATEGY : P=0.5 \n")
 P1 = np.array([0.5 for i in range(0,T)])
 
 W1=Wealth1(P1)
@@ -111,6 +121,7 @@ plt.show()
     
 # 2nd Strategy: P is inscreasing
 
+print( "\n 2ND STRATEGY : P IS INCREASING \n")
 P2=np.linspace(0,1,T)
 W2=Wealth1(P2)
 
@@ -128,6 +139,8 @@ plt.show()
 
 
 # 3rd Strategy: P is decreasing
+
+print( "\n 3RD STRATEGY : P IS DECREASING \n")
 
 P3=np.ones((T,1))
 
@@ -148,7 +161,9 @@ plt.ylabel('P')
 plt.xlabel('Time')
 plt.show()
 
-# Random
+# 4th strategy : P is Random
+
+print( "\n 4TH STRATEGY : P IS RANDOM\n")
 P4=np.zeros((T,1))
 for i in range (0,T):
     P4[i]=random.uniform(0,1)

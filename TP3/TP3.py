@@ -29,9 +29,6 @@ data['fast_sma'] = sma(data['Close'].tolist(), 10)
 data['slow_sma'] = sma(data['Close'].tolist(), 30)
 
 
-
-
-
 " QUESTION 2: Separate the dataset in two parts: training and test datasets." 
 
 nb = int(len(data)*0.70)
@@ -50,33 +47,63 @@ plt.show()
 ## Trading Strategy
 
 def strategy(Data):	
-		
-		'''If Price is 3% below Slow Moving Average, then Buy
-		Put selling order for 2% above buying price'''
-        
-        A = np.zeros((n,1))
+    '''If Price is 3% below Slow Moving Average, then Buy
+	Put selling order for 2% above buying price'''
+    nb = int(len(data)*0.70)
+    A = np.zeros((nb,1))
+    for i in range(1,nb):
+        if Data['slow_sma'][i] > Data['Close'][i] and (Data['slow_sma'][i] - Data['Close'][i]) > 0.03 * Data['Close'][i]:
+            A[i]=1 #achat
+        if Data['slow_sma'][i] < Data['Close'][i] and (Data['slow_sma'][i] - Data['Close'][i]) < 0.02 * Data['Close'][i]:
+            A[i]=-1 #vend
+    return A
+    
 
-		for i in range(1, len(df['close'])):
-			if data['slow_sma'][i] > data['low'][i] and (data['slow_sma'][i] - data['low'][i]) > 0.03 * data['low'][i]:
-				A[i]=1
+A=strategy(data)
 
-            	buy_price = 0.8 * df['slow_sma'][i]
-		if buy_price >= df['close'][i]:
-			self.buy_signals.append([df['time'][i], df['close'][i], df['close'][i] * 1.045])
-			return True
+NB_share = 30
+Cash = 5000
+nb = int(len(data)*0.70)
+
+#price_trans = 0.1*30*valeurclose
+
+def reward(A,S,i):
+    # ON VEUT MAXIMISER LE CASH DU PTF: si on vend on gagne du cash et si on achète on perd du cash
+    R = np.zeros((nb,1))
+    for j in range(0,nb):
+        if A[j] == -1:
+            R[j]= S[j] * NB_share - 0.1* S[j] * NB_share
+        if A[i] == 1:
+            R[j]= -S[j] * NB_share - 0.1* S[j] * NB_share
+        if A[j] == 0:
+            R[j]= 0
+    return R[i]
 
 
 
+R = [reward(A,Train_close,i) for i in range(0,nb)]
 
 
+def ptfs(R):
+    ptf = np.zeros((nb,1))
+    ptf[0] = Cash
+    for j in range(0,nb-1):
+         ptf[j+1] = ptf[j] + R[j]      
+    return ptf
 
+    
+ptf = ptfs(R)
 
+alpha = 0.4
+gamma = 0.9
 
-
-
-
-
-
+def Q_learnig(S,A):
+    Q = np.zeros((nb,1))
+    Q_prec = Q
+    for itera in range(10):        
+        for i in range(0,nb):
+            
+            break
 
 
 

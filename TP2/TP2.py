@@ -217,7 +217,8 @@ print("\nThe max of optimal cumulative reward is:",max(W4))
 print("The max is reached at this index:",np.where(W4==max(W4)))
 
 
-
+a=np.where(W4==max(W4))
+b=a[0][0]-1
 
 
 

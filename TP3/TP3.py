@@ -52,7 +52,7 @@ Nb_share = 30
 Cash_init = 5000
 
 def state(p,Nb,Cash):
-    pas = 10
+    pas = 5
     Price = []
     for i in range(1,pas):
         Price.append(p[0:i:1])

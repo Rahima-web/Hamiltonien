@@ -13,8 +13,6 @@ import pandas as pd
 ##from pyti.bollinger_bands import lower_bollinger_band as lbb
 
 
-" VARIABLE DECLARATION" 
-
 
 " QUESTION 1: Download of the file" 
 
@@ -40,22 +38,31 @@ Train_close = DATA[0:NB_OF_TRAIN,1]
 Test_date = DATA[NB_OF_TRAIN:len(DATA),0]
 Test_close = DATA[NB_OF_TRAIN:len(DATA),1]
 
-plt.plot(Train_date,Train_close,color="blue")
-plt.plot(Test_date,Test_close,color="red")
+print("\n---------------QUESTION 2: SERATION OF THE DATASET-------------\n")
+
+plt.plot(Train_date,Train_close,label ="Training",color="blue")
+plt.plot(Test_date,Test_close,label="Test",color="red")
+plt.xlabel("Time")
+plt.ylabel("Close Price")
+plt.legend()
 plt.show()
 
 
-"""
-QUESTION 3
-"""
+
+" QUESTION 3 : state & reward function + portfolio function"
+
+" VARIABLE DECLARATION" 
 
 n_train = len(Train_date)
 Initial_nbshare = 0
 NB_of_Share = 30
 Initial_Cash = 5000
 
+### STATE FUNCTION ###
+
+
 """
-Here we A matrix S is defined which describes each state: 
+Here  we define a matrix S which describes each state: 
 each state corresponds to the closing price for 5 days, 
 the number of shares owned, and the cash owned.
 """
@@ -73,10 +80,13 @@ def State_function(data,Nb,Cash):
 S = State_function(Train_close,NB_of_Share,Initial_Cash) 
 #print(S) 
 
+
+### REWARD FUNCTION ###
+
 """
 For the reward function: we calculate the 5-day simple moving average, then we set that: 
     - if the close price is 3% below the  5-day simple Moving Average, then we buy 
-    - if the close price is 2% above the  5-day simple Moving Average, then we sell
+    - if the close price is 0.2% above the  5-day simple Moving Average, then we sell
 """
 
 def Reward_function(State,a,t):
@@ -133,6 +143,8 @@ R = Reward_function(State_function(Train_close,0,5000),2,35)
 
 #print(R)
 
+### PORTFOLIO FUNCTION ###
+
 def Portfolio_function(old_ptf,S,a,t):
     R,Nb,Cash = Reward_function(S,a,t)
     ptf = old_ptf
@@ -145,9 +157,10 @@ def Portfolio_function(old_ptf,S,a,t):
     return ptf
 
 
-"""
-QUESTION 4
-"""
+
+" QUESTION 4 : Implement the Q-Learning Algorithm "
+
+" VARIABLE DECLARATION"
 
 alpha = 0.01
 gamma = 0.9
@@ -155,6 +168,7 @@ gamma = 0.9
 def Research_of_max(old_cash,S,t):
     Action = np.zeros((3,1))
     Nb = S[1]
+    
     # If the number of owned shares is equal to zero, so we buy, then a=2 
     if Nb == 0:
         a=2
@@ -162,7 +176,8 @@ def Research_of_max(old_cash,S,t):
     else:
         for k in range(0,3):
             Action[k] = Portfolio_function(old_cash,S,k,t)
-        #We reseach th eoptimal action a
+            
+        #We reseach the optimal action a
         index = np.where(Action == np.max(Action))
         a = index[0][0] 
     return Action[a],a
@@ -206,11 +221,13 @@ def Q_learning_algorithm(data):
 
 Q,Cash = Q_learning_algorithm(Train_close)
 
+### POLICY PI ###
+
 PI=np.zeros((len(Q),1))
 for i in range(0,len(Q)):
     PI[i]=np.argmax(Q[i])
 
-    
+print("\n---------------QUESTION 4:-------------\n")
 
 plt.plot(Train_date [:-1],Q[:,0], label = 'A = 0')
 plt.plot(Train_date [:-1],Q[:,1], label = 'A = 1')
@@ -219,6 +236,10 @@ plt.legend()
 plt.show()
 
 plt.plot(Train_date ,Cash, label = 'Cash')
+plt.xlabel("Time")
+plt.ylabel("Cash value")
+plt.title("Evolution of cash")
+plt.legend()
 plt.show()
 
 plt.plot(Train_date [:-1],PI, label = 'policy')

@@ -162,8 +162,8 @@ def Portfolio_function(old_ptf,S,a,t):
 
 " VARIABLE DECLARATION"
 
-alpha = 0.01
-gamma = 0.9
+alpha = 0.001
+gamma = 0.999
 
 def Research_of_max(old_cash,S,t):
     Action = np.zeros((3,1))
@@ -202,7 +202,6 @@ def Research_of_max(old_cash,S,t):
 def Q_learning_algorithm(data):
     Q = np.zeros((n_train-1,3))
     old_NB,old_Cash = NB_of_Share,Initial_Cash
-    Cashs = [old_Cash]
     for t in range(1,n_train):
         S = State_function(data,old_NB,old_Cash)
         for a in range(0,3):
@@ -215,11 +214,9 @@ def Q_learning_algorithm(data):
             
         R,new_NB,new_Cash = Reward_function(State_function(data,Nb,Cash),Q_max[1],t)
         old_NB,old_Cash = new_NB,new_Cash
-        Cashs.append(new_Cash)
-        
-    return Q,Cashs
+    return Q
 
-Q,Cash = Q_learning_algorithm(Train_close)
+Q = Q_learning_algorithm(Train_close)
 
 ### POLICY PI ###
 
@@ -235,14 +232,11 @@ plt.plot(Train_date [:-1],Q[:,2], label = 'A = 2')
 plt.legend()
 plt.show()
 
-plt.plot(Train_date ,Cash, label = 'Cash')
-plt.xlabel("Time")
-plt.ylabel("Cash value")
-plt.title("Evolution of cash")
-plt.legend()
-plt.show()
 
 plt.plot(Train_date [:-1],PI, label = 'policy')
+plt.xlabel("Time")
+plt.ylabel("Optimal action ")
+plt.title("Optimal sequence of action")
 plt.legend()
 plt.show()
 

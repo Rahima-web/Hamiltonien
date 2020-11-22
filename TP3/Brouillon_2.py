@@ -78,8 +78,6 @@ def State_function(data,Nb,Cash):
     return S
 
 S = State_function(Train_close,NB_of_Share,Initial_Cash) 
-#print(S) 
-
 
 ### REWARD FUNCTION ###
 
@@ -130,18 +128,11 @@ def Reward_function(State,a,t):
         R = 0
         nb = nb
         Cash = Cash
-    
-    ##The case where where we have 0 share in our portfolio, so we can't sell
-#    if (nb==0):
-#        R = -S[0][t][-1] * NB_of_Share
-#        Cash+= R
-#        nb += NB_of_Share
         
     return R,nb,Cash
 
 R = Reward_function(State_function(Train_close,0,5000),2,35)
 
-#print(R)
 
 ### PORTFOLIO FUNCTION ###
 
@@ -162,8 +153,10 @@ def Portfolio_function(old_ptf,S,a,t):
 
 " VARIABLE DECLARATION"
 
-alpha = 0.001
-gamma = 0.999
+alpha = 0.9
+gamma = 0.1
+
+### We first code how to find the A who maximise the portfolio
 
 def Research_of_max(old_cash,S,t):
     Action = np.zeros((3,1))
@@ -181,23 +174,6 @@ def Research_of_max(old_cash,S,t):
         index = np.where(Action == np.max(Action))
         a = index[0][0] 
     return Action[a],a
-
-#def Q_learning(data):
-#    Q = np.zeros((n-1,3))
-#    S = state(data,Nb_init,Cash_init)
-#    for t in range(0,n-1):
-#        for a in range(0,3):
-#            R,Nb,Cash = reward(S,a,t)
-#            Qmax = maxi(Cash,S,t+1)
-#            for itera in range(0,20):
-#                Q[t,a] = (1 - alpha) * Q[t,a] + alpha * (R + gamma * Qmax[0])                
-#        
-#        S = state(data,Nb,Cash)
-#        _,Nb,Cash = reward(S,Qmax[1],t)
-#    return Q
-#
-#Q = Q_learning(close_train)
-#print(Q)
 
 def Q_learning_algorithm(data):
     Q = np.zeros((n_train-1,3))
@@ -218,7 +194,7 @@ def Q_learning_algorithm(data):
 
 Q = Q_learning_algorithm(Train_close)
 
-### POLICY PI ###
+### POLICY PI: the sequence of optimal action ###
 
 PI=np.zeros((len(Q),1))
 for i in range(0,len(Q)):
@@ -229,6 +205,8 @@ print("\n---------------QUESTION 4:-------------\n")
 plt.plot(Train_date [:-1],Q[:,0], label = 'A = 0')
 plt.plot(Train_date [:-1],Q[:,1], label = 'A = 1')
 plt.plot(Train_date [:-1],Q[:,2], label = 'A = 2')
+plt.xlabel("Time")
+plt.ylabel("Cash Value")
 plt.legend()
 plt.show()
 

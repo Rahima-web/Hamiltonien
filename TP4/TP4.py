@@ -33,6 +33,7 @@ p_max = 0.5
 p_min = 0.2
 size_min=40
 size_max=300
+#p=0.3
 
 """ QUESTION 1 : Generate several maps with different parking-space distributions. """
 
